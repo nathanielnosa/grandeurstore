@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-sm bg-light shadow navbar-light">
+    <div class="container-fluid">
+      <div class="d-none d-md-block">
+        <ul class="navbar-nav mx-auto" style="font-size: 1.5rem;">
+          {% if category %}
+            {% for cat in category  %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'category' cat.id %}">{{cat.title|title}}</a>
+            </li>
+            {% endfor %}
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">No category to display here
+            </a>
+          </li>
+          {% endif %}
+        
+        </ul>
+      </div>
+      <!-- without inside row -->
+        <a class="navbar-brand d-md-none" href="{% url 'index' %}"><h3 class="display-6 fw-bold">Grandeur <span class="text-danger">Store</span></h3></a>
+        <a class="navbar-brand d-none d-md-block mx-auto w-100 text-center" href="{% url 'index' %}"><h3 class="display-6 fw-bold">Grandeur <span class="text-danger">Store</span></h3></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse w-100" id="collapsibleNavbar">
+
+          <ul class="navbar-nav mx-auto d-md-none" style="font-size: 1.5rem;">
+            {% if category %}
+            {% for cat in category  %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'category' cat.id %}">{{cat.title|title}}</a>
+            </li>
+            {% endfor %}
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">No category to display here
+            </a>
+          </li>
+          {% endif %}
+          </ul>
+
+          <form class="d-flex w-100" method="get" action="{% url 'search' %}">
+            <div class="input-group">
+              <input type="text" name="kword" class="form-control" placeholder="Search">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+            </div>
+          </form>
+
+          <div class=" d-flex text-end gap-3 align-items-center w-25">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown"><i class="bi bi-person" style="font-size: 1.7rem;"></i></a>
+                <ul class="dropdown-menu">
+                  {% if request.user.is_authenticated %}
+                  <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    
+                  {% else %}
+    
+                  <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                  <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                  
+                  {% endif %}
+                  
+                </ul>
+              </li>
+            </ul>
+            <a href="{% url 'my-cart' %}" class="text-decoration-none text-dark d-flex" >
+              <i class="bi bi-cart" style="font-size: 1.7rem;"></i>
+              <span class="badge bg-danger h-25 mt-3 me-0">{{cart}}</span>
+            </a>
+            
+          </div>
+        </div>
+    </div>
+  </nav>

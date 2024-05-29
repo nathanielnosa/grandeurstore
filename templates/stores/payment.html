@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<section class="manage-cart py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header display-6 text-center">Make Payment</div>
+                    <div class="card-body">
+                        <p class="lead">You are about to make a payment base on the order you made</p>
+                        <p class="lead">The order you made will cost you <span class="fw-bold">&#8358;{{order.amount}}</span></p>
+                        <div class="d-flex justify-content-between gap-2">
+                            <a href="{% url 'my-cart' %}" class="btn btn-primary w-50">Cancel Payment</a>
+                            <div class="w-50">
+                                <script src="https://js.paystack.co/v1/inline.js"></script>
+                                <button class="btn btn-success w-100" type="submit" onclick="payWithPaystack()"> Pay </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function payWithPaystack(){
+        let currency = 'NGN';
+        let ref = '{{order.ref}}';
+        let obj = {
+            key:"{{paystack}}",
+            email:"{{order.email}}",
+            amount:"{{order.amount_value}}",
+            ref:ref,
+            callback:function(response){
+                window.location.href= "{% url 'verify-payment' order.ref %}"
+                }
+            }
+            if(Boolean(currency)){
+                obj.currency = currency.toLocaleUpperCase();
+            }
+            let handler = PaystackPop.setup(obj);
+            handler.openIframe();
+    }
+</script>
+{% endblock content %}

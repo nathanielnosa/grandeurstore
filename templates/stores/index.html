@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<!-- category -->
+  <section id="category" class="py-3">
+    <div class="container-fluid">
+        {% if categorys %}
+            <div class="intro text-center my-3 py-2">
+                <h4 class="display-6">Our Category</h4>
+            </div>
+            <div class="row gy-2">
+                {% for category in categorys %}
+                <div class="col-md-4">
+                    <a href="{% url 'category' category.id %}" class="text-decoration-none text-dark">
+                        <div class="card rounded-0">
+                            <div class="card-img">
+                                <img src="{{category.image.url}}" class="img-fluid" alt="{{category.title}}"/>
+                            </div>
+                            <div class="card-img-overlay d-flex align-items-center justify-content-center text-uppercase">
+                                <h2 class="text-white fw-bold">{{category.title}}</h2>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="lead rounded bg-danger py-3 text-center text-white">Admin has not add any category items yet</p>
+        {% endif %}
+    </div>
+  </section>
+  
+  <!-- intros -->
+  <section class="py-4">
+    <div class="container-fluid py-3">
+        <div class="row gy-2">
+            <div class="col-md-4" div data-aos="fade-up" data-aos-duration="1000">
+                <div class="card rounded-0">
+                    <div class="card-body">
+                        <i class="bi bi-triangle"></i>
+                        <h5>HOW TO SHOP</h5>
+                        <p>Your guide to shopping and placing orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" div data-aos="fade-up" data-aos-duration="2000">
+                <div class="card rounded-0">
+                    <div class="card-body">
+                        <i class="bi bi-question-circle-fill"></i>
+                        <h5>FAQS</h5>
+                        <p>Your questions answered</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" div data-aos="fade-up" data-aos-duration="3000">
+                <div class="card rounded-0">
+                    <div class="card-body">
+                        <i class="bi bi-chat-left"></i>
+                        <h5>NEED HELP?</h5>
+                        <p>Contact our global Customer Service team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- latest products -->
+  <section id="products" class="py-3">
+    <div class="container-fluid">
+        {% if products %}
+            <div class="intro text-center my-3 py-2">
+                <h4 class="display-6">Our Latest Products</h4>
+                <a class="btn btn-outline-dark" href="{% url 'products' %}">View More</a>
+            </div>
+            <div class="row gy-3">
+                {% for product in products %}
+                    <div class="col-md-3">
+                        <a class="text-decoration-none text-dark" href="{% url 'product' product.id %}">
+                            <div class="card rounded-0 flip-container">
+                                <div class="flipper">
+                                    <div class="card-img front">
+                                        <img src="{{product.main.url}}" height="13" class="img-fluid" alt="{{product.title}}"/>
+                                    </div>
+                                    <div class="card-img back">
+                                        <img src="{{product.photo1.url}}" height="13" class="img-fluid" alt="{{product.title}}"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <em>{{product.category}}</em>
+                                    <h4>{{product.title}}</h4>
+                                    <p class="mb-3">{{product.description}}</p>
+                                    <span class="fw-bold">
+                                        {% if product.discount_price %}
+                                            <span class="text-info">
+                                                <strike class="text-danger"> &#8358;{{product.price |intcomma}}</strike> &#8358;{{product.discount_price |intcomma}}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-info">
+                                                &#8358;{{product.price |intcomma}}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="lead rounded bg-danger py-3 text-center text-white">Admin has not add any product items yet</p>
+        {% endif %}
+    </div>
+  </section>
+
+
+
+{% endblock content %}

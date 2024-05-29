@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<section class="manage-cart py-3">
+    <div class="container">
+        <div class="row">
+            {% if carts %}
+            <div class="col-md-9 mx-auto">
+                <div class="table-responsive">
+                    <table class="table table-responsive table-hover table-dark table-stripe">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product Name</th>
+                                <th>Product Image</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart in carts.cartproduct_set.all  %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{cart.product.title}}</td>
+                                <td class="w-25"><img src="{{cart.product.main.url}}" class="w-50"   alt=""></td>
+                                <td>
+                                    {% if cart.product.discount_price %}
+                                    &#8358;{{cart.product.discount_price |intcomma}}
+                                    {% else %}
+                                    &#8358;{{cart.product.price |intcomma}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'manage-cart' cart.id %}?action=inc" class="text-decoration-none text-light"><i class="bi bi-plus-circle"></i></a>
+                                    {{cart.quantity}}
+                                    <a href="{% url 'manage-cart' cart.id %}?action=dcr" class="text-decoration-none text-light"><i class="bi bi-dash-circle"></i></a>
+                                </td>
+                                <td>
+                                    &#8358;{{cart.subtotal |intcomma}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="3">
+                                    <h5 class="display-5">Total</h5>
+                                </td>
+                                
+                                <td colspan="3" class="text-end">
+                                    <h5 class="display-5">&#8358;{{carts.total |intcomma}}</h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="{% url 'products' %}" class="btn btn-success w-100">Continue Shopping</a>
+                                </td>
+                                {% if carts.cartproduct_set.all %}
+                                <td colspan="2">
+                                    <a href="{% url 'products' %}" class="btn btn-success w-100">Empty Cart</a>
+                                </td>
+                                <td colspan="2">
+                                    <a href="{% url 'checkout' %}" class="btn btn-success w-100">Proceed To Checkout</a>
+                                </td>
+                                {% else %}
+                                <td colspan="2">
+                                    <button disabled  class="btn btn-success w-100">Empty Cart</button>
+                                </td>
+                                <td colspan="2">
+                                    <button disabled class="btn btn-success w-100">Proceed To Checkout</button>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+              <p class="lead bg-danger text-white text-center rounded py-3">No cart item by this user</p>
+            {% endif %}
+            
+        </div>
+    </div>
+</section>
+{% endblock content %}

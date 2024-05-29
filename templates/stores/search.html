@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<section class="all-product py-3">
+    <div class="container py-3">
+        <div class="text-center"><h4 class="display-4">All Products</h4></div>
+        <div class="row gy-3">
+            {% if product %}
+                {% for product in product%}
+                    <div class="col-md-4">
+                        <a class="text-decoration-none text-dark" href="{% url 'product' product.id %}">
+                            <div class="card rounded-0">
+                                <div class="card-img">
+                                    <img src="{{product.main.url}}" height="13" class="img-fluid" alt="{{product.title}}"/>
+                                </div>
+                                <div class="card-body">
+                                    <em>{{product.category}}</em>
+                                    <h4>{{product.title}}</h4>
+                                    <p class="mb-3">{{product.description}}</p>
+                                    <span class="fw-bold">
+                                        {% if product.discount_price %}
+                                            <span class="text-info">
+                                                <strike class="text-danger"> &#8358;{{product.price}}</strike> &#8358;{{product.discount_price}}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-info">
+                                                &#8358;{{product.price}}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p class="lead rounded bg-danger py-3 text-center text-white">No product in the database yet</p>
+            {% endif %}
+        </div>
+       
+    </div>
+</section>
+{% endblock content %}

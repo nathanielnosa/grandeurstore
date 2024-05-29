@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+
+<section class="single-product py-3">
+    <div class="container-fluid py-4">
+    {% if product %}
+        <div class="row">
+            <div class="col-md-8">
+                <!-- image rows -->
+                <div class="row gy-2">
+                    <div class="col-md-6 col-6">
+                        <img class="img-fluid" src="{{product.main.url}}">
+                    </div>
+                    <div class="col-md-6 col-6">
+                        <img class="img-fluid" src="{{product.photo1.url}}">
+                    </div>
+                </div>
+                <div class="row gy-2">
+                    {%if product.photo3%}
+                    <div class="col-md-4 col-4">
+                        <img class="img-fluid" src="{{product.photo2.url}}">
+                    </div>
+                    {% endif %}
+                    {%if product.photo3%}
+                    <div class="col-md-4 col-4">
+                        <img class="img-fluid" src="{{product.photo3.url}}">
+                    </div>
+                    {% endif %}
+                    {% if product.photo4%}
+                    <div class="col-md-4 col-4">
+                        <img class="img-fluid" src="{{product.photo4.url}}">
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- breadcrumb -->
+                <nav aria-label="breadcrumb" class="my-3">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                      <li class="breadcrumb-item"><a >{{product.category}}</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">{{product.title}}</li>
+                    </ol>
+                  </nav>
+                <!-- details -->
+                <div class="details my-2">
+                    <h4 class="py-3">THE DETAILS</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Conscious</p>
+                            <h3>{{product.title}}</h3>
+                            <p>{{product.description}}</p>
+                            <h5 class="fw-bold">Highlights</h5>
+                            <ul type="square">
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                                <li>green/light grey</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Composition</p>
+                            <p>Merino 100%</p>
+                            <h5 class="fw-bold">Washing instructions</h5>
+                            <p>Dry Clean Only</p>
+                            <h5 class="fw-bold">Wearing</h5>
+                            <p>The model is 1.86 m wearing size M</p>
+                            <p>The model is also styled with: AV Vattev checked wide-leg shorts, Marni Fussbet Sabot calf-hair slippers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <h3>{{product.title}}</h3>
+                <p>{{product.description}}</p>
+                <p class="lead py-3 my-2">
+                    {% if product.discount_price %}
+                        <span class="text-info">
+                            <strike class="text-danger"> &#8358;{{product.price |intcomma}}</strike> &#8358;{{product.discount_price |intcomma}}
+                        </span>
+                        {% else %}
+                        <span class="text-info">
+                            &#8358;{{product.price |intcomma}}
+                        </span>
+                    {% endif %}
+                </p>
+                {% if product.in_stock == 0 %}
+                <p class="lead text-danger fw-bold">this product is not available</p>
+                <div class="cta">
+                    <button disabled class="btn btn-outline-dark" href="{% url 'add-to-cart' product.id %}"><i class="bi bi-cart"></i> ADD TO CART</button>
+                    <button class="btn btn-outline-info" href="{% url 'products' %}"><i class="bi bi-arrow-left-circle-fill"></i> CONTINUE SHOPPING</button>
+                </div>
+                {% else %}
+                <p class="lead">{{product.in_stock}}  available</p>
+                <div class="cta">
+                    <a class="btn btn-outline-dark" href="{% url 'add-to-cart' product.id %}"><i class="bi bi-cart"></i> ADD TO CART</a>
+                    <a class="btn btn-outline-info" href="{% url 'products' %}"><i class="bi bi-arrow-left-circle-fill"></i> CONTINUE SHOPPING</a>
+                </div>
+                {% endif %}
+
+                <div class="delievery my-5">
+                    <p>ESTIMATED DELIVERY</p>
+                    <p>{{product.delivery_date}}</p>
+                </div>
+
+                <div class="policy bg-light px-2 py-4 mb-5">
+                    <p>ENJOY FREE RETURNS</p>
+                    <p>{{product.return_policy}}</p>
+                </div>
+
+                <div class="img mt-5">
+                    <img class="img-fluid mt-5" src="{{product.photo1.url}}">
+                </div>
+            </div>
+        </div>
+    {% else %}
+    <p class="lead rounded bg-danger py-3 text-center text-white">No product with this id match</p>
+    {% endif %}
+    </div>
+</section>
+
+{% endblock content %}

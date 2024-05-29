@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<section class="category py-3">
+    <div class="container py-3">
+        <div class="text-center">
+            <h4 class="display-4"></h4>
+        </div>
+
+        <div class="row gy-3">
+            {% if categorys %}
+            {% for product in categorys%}
+                    <div class="col-md-4">
+                        <a class="text-decoration-none text-dark" href="{% url 'product' product.id %}">
+                            <div class="card rounded-0">
+                                <div class="card-img">
+                                    <img src="{{product.main.url}}" height="13" class="img-fluid" alt="{{product.title}}"/>
+                                </div>
+                                <div class="card-body">
+                                    <em>{{product.category}}</em>
+                                    <h4>{{product.title}}</h4>
+                                    <p class="mb-3">{{product.description}}</p>
+                                    <span class="fw-bold">
+                                        {% if product.discount_price %}
+                                            <span class="text-info">
+                                                <strike class="text-danger"> &#8358;{{product.price}}</strike> &#8358;{{product.discount_price}}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-info">
+                                                &#8358;{{product.price}}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p class="lead rounded bg-danger py-3 text-center text-white">No product in the database yet</p>
+            {% endif %}
+        </div>
+        <!-- pagination -->
+        <section class="my-3">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <ul class="pagination">
+                        {% if paginator.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{paginator.previous_page_number}}">Previous</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" disable>Previous</a></li>
+                        {% endif %}
+                        
+                        {% for i in paginator.paginator.page_range %}
+                            {% if i == paginator.number %}
+                            <li class="page-item active"><a class="page-link">{{i}}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if paginator.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{paginator.next_page_number}}">Next</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" disable>Next</a></li>
+                        {% endif %}
+                        
+                      </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+{% endblock content %}

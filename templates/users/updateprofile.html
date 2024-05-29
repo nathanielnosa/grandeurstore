@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">update user</div>
+                    <div class="card-body">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{form}}
+                            <div class="d-grid my-2">
+                                <button class="btn btn-dark" type="submit">Register</button>
+                                <a href="{% url 'login' %}" class="text-decoration-none text-dark mt-2 text-center">Have an account? Sign-in </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+{% endblock content %}

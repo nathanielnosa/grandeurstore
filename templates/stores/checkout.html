@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Welcome to Grandeur Store{% endblock title %}
+
+{% block content %}
+<section class="manage-cart py-3">
+    <div class="container">
+        <div class="text-center display-6 my-3 d-flex justify-content-evenly">
+            <a href="{% url 'my-cart' %}" class="btn btn-dark"><i class="bi bi-arrow-left-circle"></i> Go back</a>Checkout
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                {% if cart %}
+                  <div class="responsive table-responsive">
+                    <table class="table table-responsive table-hover table-dark table-stripe">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product Name</th>
+                                <th>Product Image</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart in cart.cartproduct_set.all  %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{cart.product.title}}</td>
+                                <td class="w-25"><img src="{{cart.product.main.url}}" class="w-50"   alt=""></td>
+                                <td>
+                                    {% if cart.product.discount_price %}
+                                    &#8358;{{cart.product.discount_price |intcomma}}
+                                    {% else %}
+                                    &#8358;{{cart.product.price |intcomma}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'manage-cart' cart.id %}?action=inc" class="text-decoration-none text-light"><i class="bi bi-plus-circle"></i></a>
+                                    {{cart.quantity}}
+                                    <a href="{% url 'manage-cart' cart.id %}?action=dcr" class="text-decoration-none text-light"><i class="bi bi-dash-circle"></i></a>
+                                </td>
+                                <td>
+                                    &#8358;{{cart.subtotal |intcomma}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="3">
+                                    <h5 class="display-5">Total</h5>
+                                </td>
+                                
+                                <td colspan="3" class="text-end">
+                                    <h5 class="display-5">&#8358;{{cart.total |intcomma}}</h5>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                  </div>
+                {% else %}
+                  <p class="lead bg-danger py-3 text-center text-white">No cart matching this user</p>
+                {% endif %}
+                
+            </div>
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <form action="" method="post" class="form">
+                        {% csrf_token %}
+                        {{form}}
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success my-3">Click To Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
